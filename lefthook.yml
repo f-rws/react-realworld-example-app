@@ -4,3 +4,4 @@ pre-commit:
     format:
       glob: "*.{js,ts,tsx}"
       run: npm run format
+      stage_fixed: true
