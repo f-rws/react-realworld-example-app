@@ -1,10 +1,12 @@
-function App() {
+import { Header } from "./components/layout/Header.tsx";
 
-  return (
-    <>
-      app
-    </>
-  );
+function App() {
+    return (
+        <>
+            <Header />
+            app
+        </>
+    );
 }
 
 export default App;
