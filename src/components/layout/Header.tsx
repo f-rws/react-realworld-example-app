@@ -1,3 +1,5 @@
+import { Link } from "@tanstack/react-router";
+
 export const Header = () => {
     /*
      * TODO:
@@ -15,12 +17,12 @@ export const Header = () => {
                 </a>
                 <ul className="nav navbar-nav pull-xs-right">
                     <li className="nav-item">
-                        <a
-                            className="nav-link active"
-                            href="/"
+                        <Link
+                            to={"/"}
+                            className="nav-link"
                         >
                             Home
-                        </a>
+                        </Link>
                     </li>
                     <li className="nav-item">
                         <a

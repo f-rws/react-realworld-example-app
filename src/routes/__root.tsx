@@ -1,4 +1,4 @@
-import { createRootRoute } from "@tanstack/react-router";
+import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { Header } from "../components/layout/Header.tsx";
 
 export const Route = createRootRoute({
@@ -9,7 +9,7 @@ function RootComponent() {
     return (
         <>
             <Header />
-            app
+            <Outlet />
         </>
     );
 }
