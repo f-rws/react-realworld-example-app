@@ -2,10 +2,8 @@ import { Link } from "@tanstack/react-router";
 
 export const Header = () => {
     /*
-     * TODO:
-     *  - ログインユーザー、ログアウトユーザーに対応する
-     *  - ルーティングを実装する
-     * */
+     * TODO: ログインユーザー、ログアウトユーザーに対応する
+     */
     return (
         <nav className="navbar navbar-light">
             <div className="container">
@@ -25,20 +23,20 @@ export const Header = () => {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <a
+                        <Link
+                            to={"/login"}
                             className="nav-link"
-                            href="/login"
                         >
                             Sign in
-                        </a>
+                        </Link>
                     </li>
                     <li className="nav-item">
-                        <a
+                        <Link
+                            to={"/register"}
                             className="nav-link"
-                            href="/register"
                         >
                             Sign up
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </div>
