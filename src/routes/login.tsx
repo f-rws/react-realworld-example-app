@@ -2,19 +2,19 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { userAuthSchema } from "../models/user.ts";
 
 export const Route = createFileRoute("/login")({
     component: Login,
 });
 
-const formData = z.object({
-    email: z.string().email(),
-    password: z.string(),
-});
-type FormData = z.infer<typeof formData>;
+const formDataSchema = userAuthSchema.omit({ username: true });
+type FormData = z.infer<typeof formDataSchema>;
 
 function Login() {
-    const { register, handleSubmit } = useForm<FormData>({ resolver: zodResolver(formData) });
+    const { register, handleSubmit } = useForm<FormData>({
+        resolver: zodResolver(formDataSchema),
+    });
 
     const onSubmit = (data: FormData) => {
         console.log(data);
