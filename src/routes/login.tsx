@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { apiClientUsers } from "../api/users";
 import { userAuthSchema } from "../models/user.ts";
 
 export const Route = createFileRoute("/login")({
@@ -16,8 +17,14 @@ function Login() {
         resolver: zodResolver(formDataSchema),
     });
 
-    const onSubmit = (data: FormData) => {
-        console.log(data);
+    // TODO: 成功時と失敗時の処理を追加する
+    const onSubmit = async (requestData: FormData) => {
+        try {
+            const { data } = await apiClientUsers.postLogin({ user: requestData });
+            console.log(data);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
