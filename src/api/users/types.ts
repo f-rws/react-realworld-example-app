@@ -10,6 +10,6 @@ export type PostLoginRequest = {
 type PostLoginRequestUser = z.infer<typeof postLoginRequestUserSchema>;
 
 export type PostLoginResponse = {
-    user: PostLoginResponseUserSchema;
+    user: PostLoginResponseUser;
 };
-export type PostLoginResponseUserSchema = z.infer<typeof postLoginResponseUserSchema>;
+export type PostLoginResponseUser = z.infer<typeof postLoginResponseUserSchema>;
