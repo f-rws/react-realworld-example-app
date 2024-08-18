@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { apiClientUsers } from "../api/users";
 import { userAuthSchema } from "../models/user.ts";
 
 export const Route = createFileRoute("/register")({
@@ -12,13 +15,27 @@ const formDataSchema = userAuthSchema;
 type FormData = z.infer<typeof formDataSchema>;
 
 function Register() {
+    const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const { register, handleSubmit } = useForm<FormData>({
         resolver: zodResolver(formDataSchema),
     });
 
-    // TODO: 登録処理を追加する
     const onSubmit = async (requestData: FormData) => {
-        console.log(requestData);
+        setErrorMessages([]);
+
+        try {
+            const { data } = await apiClientUsers.post({ user: requestData });
+            // TODO: 成功時の処理を追加する
+            console.log(data);
+        } catch (err) {
+            if (isAxiosError(err)) {
+                const errorMessagesMap = new Map<string, string[]>(Object.entries(err.response?.data.errors));
+                errorMessagesMap.forEach((messages, key) => {
+                    const errorMessagesByKey = messages.map((message) => `${key}: ${message}`);
+                    setErrorMessages((prevState) => [...prevState, ...errorMessagesByKey]);
+                });
+            }
+        }
     };
 
     return (
@@ -31,10 +48,13 @@ function Register() {
                             <Link to={"/login"}>Have an account?</Link>
                         </p>
 
-                        {/* TODO: APIレスポンスのエラーメッセージを表示させる */}
-                        {/*<ul className="error-messages">*/}
-                        {/*    <li>That email is already taken</li>*/}
-                        {/*</ul>*/}
+                        {errorMessages.length ? (
+                            <ul className="error-messages">
+                                {errorMessages.map((errorMessage) => (
+                                    <li key={errorMessage}>{errorMessage}</li>
+                                ))}
+                            </ul>
+                        ) : null}
 
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <fieldset className="form-group">
