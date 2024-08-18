@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/register")({
     component: Register,
@@ -12,7 +12,7 @@ function Register() {
                     <div className="col-md-6 offset-md-3 col-xs-12">
                         <h1 className="text-xs-center">Sign up</h1>
                         <p className="text-xs-center">
-                            <a href="/login">Have an account?</a>
+                            <Link to={"/login"}>Have an account?</Link>
                         </p>
 
                         {/* TODO: APIレスポンスのエラーメッセージを表示させる */}
