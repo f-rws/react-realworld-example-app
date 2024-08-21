@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { apiClientUsers } from "../api/users";
 import { userAuthSchema } from "../models/user.ts";
+import { LOCAL_STORAGE_KEYS, useLocalStorage } from "../hooks/localStorage.ts";
 
 export const Route = createFileRoute("/register")({
     component: Register,
@@ -15,6 +16,7 @@ const formDataSchema = userAuthSchema;
 type FormData = z.infer<typeof formDataSchema>;
 
 function Register() {
+    const { set } = useLocalStorage();
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const { register, handleSubmit } = useForm<FormData>({
         resolver: zodResolver(formDataSchema),
@@ -25,8 +27,7 @@ function Register() {
 
         try {
             const { data } = await apiClientUsers.post({ user: requestData });
-            // TODO: 成功時の処理を追加する
-            console.log(data);
+            set(LOCAL_STORAGE_KEYS.JWT_TOKEN, data.user.token);
         } catch (err) {
             if (isAxiosError(err)) {
                 const errorMessagesMap = new Map<string, string[]>(Object.entries(err.response?.data.errors));
