@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { userAuthSchema, userSchema } from "../../models/user.ts";
+import { userAuthSchema, userSchema } from "@/models/user.ts";
 
 const postRequestUserSchema = userAuthSchema;
 const postResponseUserSchema = userSchema;

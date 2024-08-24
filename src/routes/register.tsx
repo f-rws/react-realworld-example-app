@@ -4,9 +4,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { apiClientUsers } from "../api/users";
-import { userAuthSchema } from "../models/user.ts";
-import { LOCAL_STORAGE_KEYS, useLocalStorage } from "../hooks/localStorage.ts";
+import { apiClientUsers } from "@/api/users";
+import { userAuthSchema } from "@/models/user.ts";
+import { LOCAL_STORAGE_KEYS, useLocalStorage } from "@/hooks/localStorage.ts";
 
 export const Route = createFileRoute("/register")({
     component: Register,

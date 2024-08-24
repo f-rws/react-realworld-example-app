@@ -1,4 +1,4 @@
-import { apiClient } from "../index.ts";
+import { apiClient } from "@/api";
 import { PostLoginRequest, PostLoginResponse, PostRequest, PostResponse } from "./types.ts";
 
 const API_PATH = "/users";

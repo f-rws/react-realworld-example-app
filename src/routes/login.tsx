@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { apiClientUsers } from "../api/users";
-import { userAuthSchema } from "../models/user.ts";
+import { apiClientUsers } from "@/api/users";
+import { userAuthSchema } from "@/models/user.ts";
 
 export const Route = createFileRoute("/login")({
     component: Login,
