@@ -16,4 +16,5 @@ jobs:
           node-version-file: .node-version
 
       - run: npm ci
+      - run: npm run dev-build
       - run: npm run tsc
