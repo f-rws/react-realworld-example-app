@@ -1,8 +1,12 @@
 import { Link } from "@tanstack/react-router";
+import { useAuth } from "@/contexts/auth/useAuth.ts";
+import { HeaderAuthenticatedNav } from "./HeaderAuthenticatedNav.tsx";
+import { HeaderNonAuthenticatedNav } from "./HeaderNonAuthenticatedNav.tsx";
 
 export const Header = () => {
+    const { isLoggedIn } = useAuth();
     /*
-     * TODO: ログインユーザー、ログアウトユーザーに対応する
+     * TODO: activeなページにclassを追加する
      */
     return (
         <nav className="navbar navbar-light">
@@ -22,22 +26,7 @@ export const Header = () => {
                             Home
                         </Link>
                     </li>
-                    <li className="nav-item">
-                        <Link
-                            to={"/login"}
-                            className="nav-link"
-                        >
-                            Sign in
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link
-                            to={"/register"}
-                            className="nav-link"
-                        >
-                            Sign up
-                        </Link>
-                    </li>
+                    {isLoggedIn ? <HeaderAuthenticatedNav /> : <HeaderNonAuthenticatedNav />}
                 </ul>
             </div>
         </nav>
