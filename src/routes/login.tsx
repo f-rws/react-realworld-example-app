@@ -1,8 +1,12 @@
+import { useState } from "react";
+import { isAxiosError } from "axios";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { apiClientUsers } from "@/api/users";
+import { useAuth } from "@/contexts/auth/useAuth.ts";
+import { useAuthedUser } from "@/contexts/authed-user/useAuthedUser.ts";
 import { userAuthSchema } from "@/models/user.ts";
 
 export const Route = createFileRoute("/login")({
@@ -13,17 +17,30 @@ const formDataSchema = userAuthSchema.omit({ username: true });
 type FormData = z.infer<typeof formDataSchema>;
 
 function Login() {
+    const { login } = useAuth();
+    const { setAuthedUser } = useAuthedUser();
+
     const { register, handleSubmit } = useForm<FormData>({
         resolver: zodResolver(formDataSchema),
     });
+    const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
-    // TODO: 成功時と失敗時の処理を追加する
     const onSubmit = async (requestData: FormData) => {
+        setErrorMessages([]);
+
         try {
             const { data } = await apiClientUsers.postLogin({ user: requestData });
-            console.log(data);
+            const { token, ...rest } = data.user;
+            login(token);
+            setAuthedUser(rest);
         } catch (err) {
-            console.log(err);
+            if (isAxiosError(err)) {
+                const errorMessagesMap = new Map<string, string[]>(Object.entries(err.response?.data.errors));
+                errorMessagesMap.forEach((messages, key) => {
+                    const errorMessagesByKey = messages.map((message) => `${key}: ${message}`);
+                    setErrorMessages((prevState) => [...prevState, ...errorMessagesByKey]);
+                });
+            }
         }
     };
 
@@ -37,10 +54,14 @@ function Login() {
                             <Link to={"/register"}>Need an account?</Link>
                         </p>
 
-                        {/* TODO: APIレスポンスのエラーメッセージを表示させる */}
-                        {/*<ul className="error-messages">
-                            <li>That email is already taken</li>
-                        </ul>*/}
+                        {errorMessages.length ? (
+                            <ul className="error-messages">
+                                {errorMessages.map((errorMessage) => (
+                                    <li key={errorMessage}>{errorMessage}</li>
+                                ))}
+                            </ul>
+                        ) : null}
+
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <fieldset className="form-group">
                                 <input
