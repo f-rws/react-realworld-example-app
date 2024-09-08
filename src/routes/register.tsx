@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { apiClientUsers } from "@/api/users";
 import { useAuth } from "@/contexts/auth/useAuth.ts";
-import { useUser } from "@/contexts/user/useUser.ts";
+import { useAuthedUser } from "@/contexts/authed-user/useAuthedUser.ts";
 import { userAuthSchema } from "@/models/user.ts";
 
 export const Route = createFileRoute("/register")({
@@ -18,7 +18,7 @@ type FormData = z.infer<typeof formDataSchema>;
 
 function Register() {
     const { login } = useAuth();
-    const { setUser } = useUser();
+    const { setAuthedUser } = useAuthedUser();
 
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const { register, handleSubmit } = useForm<FormData>({
@@ -32,7 +32,7 @@ function Register() {
             const { data } = await apiClientUsers.post({ user: requestData });
             const { token, ...rest } = data.user;
             login(token);
-            setUser(rest);
+            setAuthedUser(rest);
         } catch (err) {
             if (isAxiosError(err)) {
                 const errorMessagesMap = new Map<string, string[]>(Object.entries(err.response?.data.errors));

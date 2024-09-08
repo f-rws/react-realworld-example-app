@@ -13,3 +13,5 @@ export const userSchema = z.object({
     bio: z.string(),
     image: z.string(),
 });
+
+export const authedUserSchema = userSchema.omit({ token: true });
