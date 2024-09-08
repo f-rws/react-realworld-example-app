@@ -1,6 +1,13 @@
-export const HeaderAuthenticatedNav = () => {
+import { z } from "zod";
+import { userSchema } from "@/models/user.ts";
+
+const authUserSchema = userSchema.omit({ token: true });
+type Props = {
+    user: z.infer<typeof authUserSchema>;
+};
+
+export const HeaderAuthenticatedNav = ({ user }: Props) => {
     // TODO: Linkに置き換える
-    // TODO: ユーザー情報を追加する
     return (
         <>
             <li className="nav-item">
@@ -27,10 +34,11 @@ export const HeaderAuthenticatedNav = () => {
                     href="/profile/eric-simons"
                 >
                     <img
-                        src=""
+                        src={user.image}
                         className="user-pic"
+                        alt="ログインユーザーのアイコン"
                     />
-                    Eric Simons
+                    {user.username}
                 </a>
             </li>
         </>
