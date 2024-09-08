@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useAuth } from "@/contexts/auth/useAuth.ts";
 import { useAuthedUser } from "@/contexts/authed-user/useAuthedUser.ts";
-import { HeaderAuthenticatedNav } from "./HeaderAuthenticatedNav.tsx";
-import { HeaderNonAuthenticatedNav } from "./HeaderNonAuthenticatedNav.tsx";
+import { HeaderAuthedNav } from "./HeaderAuthedNav.tsx";
+import { HeaderNonAuthedNav } from "./HeaderNonAuthedNav.tsx";
 
 export const Header = () => {
     const { isLoggedIn } = useAuth();
@@ -29,11 +29,7 @@ export const Header = () => {
                             Home
                         </Link>
                     </li>
-                    {isLoggedIn && authedUser ? (
-                        <HeaderAuthenticatedNav authedUser={authedUser} />
-                    ) : (
-                        <HeaderNonAuthenticatedNav />
-                    )}
+                    {isLoggedIn && authedUser ? <HeaderAuthedNav authedUser={authedUser} /> : <HeaderNonAuthedNav />}
                 </ul>
             </div>
         </nav>

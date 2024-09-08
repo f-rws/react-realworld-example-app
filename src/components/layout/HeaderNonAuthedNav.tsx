@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-export const HeaderNonAuthenticatedNav = () => {
+export const HeaderNonAuthedNav = () => {
     return (
         <>
             <li className="nav-item">

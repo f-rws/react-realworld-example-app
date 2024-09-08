@@ -5,7 +5,7 @@ type Props = {
     authedUser: z.infer<typeof authedUserSchema>;
 };
 
-export const HeaderAuthenticatedNav = ({ authedUser }: Props) => {
+export const HeaderAuthedNav = ({ authedUser }: Props) => {
     // TODO: Linkに置き換える
     return (
         <>
