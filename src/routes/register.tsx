@@ -5,6 +5,7 @@ import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { apiClientUsers } from "@/api/users";
+import { useUser } from "@/contexts/user/useUser.ts";
 import { userAuthSchema } from "@/models/user.ts";
 import { LOCAL_STORAGE_KEYS, useLocalStorage } from "@/hooks/localStorage.ts";
 
@@ -17,6 +18,8 @@ type FormData = z.infer<typeof formDataSchema>;
 
 function Register() {
     const { set } = useLocalStorage();
+    const { setUser } = useUser();
+
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const { register, handleSubmit } = useForm<FormData>({
         resolver: zodResolver(formDataSchema),
@@ -27,7 +30,9 @@ function Register() {
 
         try {
             const { data } = await apiClientUsers.post({ user: requestData });
-            set(LOCAL_STORAGE_KEYS.JWT_TOKEN, data.user.token);
+            const { token, ...rest } = data.user;
+            set(LOCAL_STORAGE_KEYS.JWT_TOKEN, token);
+            setUser(rest);
         } catch (err) {
             if (isAxiosError(err)) {
                 const errorMessagesMap = new Map<string, string[]>(Object.entries(err.response?.data.errors));
