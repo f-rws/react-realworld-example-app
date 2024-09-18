@@ -7,10 +7,15 @@ type LocalStorageValues = {
 };
 
 export const useLocalStorage = () => {
-    const set = <K extends keyof LocalStorageValues>(key: K, value: LocalStorageValues[K]) =>
+    const setItem = <K extends keyof LocalStorageValues>(key: K, value: LocalStorageValues[K]) =>
         localStorage.setItem(key, value);
 
+    const getItem = <K extends keyof LocalStorageValues>(key: K): LocalStorageValues[K] | null => {
+        return localStorage.getItem(key);
+    };
+
     return {
-        set,
+        setItem,
+        getItem,
     };
 };
