@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "format": "prettier --write \"**/*.+(js|ts|tsx)\"",
     "tsc": "tsc --noEmit --project tsconfig.app.json",
-    "test": "vitest --ui"
+    "test": "vitest --ui",
+    "testrun": "vitest run"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
