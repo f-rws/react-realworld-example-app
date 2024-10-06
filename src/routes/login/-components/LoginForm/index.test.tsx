@@ -10,11 +10,13 @@ function setup() {
     render(<LoginForm onSubmit={onClickSignIn} />);
 
     const emailInput = screen.getByRole("textbox", { name: "email" });
+    const passwordInput = screen.getByRole("textbox", { name: "password" });
     const button = screen.getByRole("button");
 
     return {
         onClickSignIn,
         emailInput,
+        passwordInput,
         button,
     };
 }
@@ -36,5 +38,13 @@ describe("LoginForm", () => {
 
         expect(onClickSignIn).not.toHaveBeenCalled();
         expect(emailInput).toHaveAccessibleErrorMessage("必須項目です");
+    });
+    test("パスワードが未入力の場合に「Sign in」を試みると、バリデーションエラーが表示される", async () => {
+        const { onClickSignIn, passwordInput, button } = setup();
+
+        await user.click(button);
+
+        expect(onClickSignIn).not.toHaveBeenCalled();
+        expect(passwordInput).toHaveAccessibleErrorMessage("必須項目です");
     });
 });

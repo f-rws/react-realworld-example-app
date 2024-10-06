@@ -45,10 +45,19 @@ export const LoginForm = (props: Props) => {
                         className="form-control form-control-lg"
                         type="text"
                         aria-label="password"
+                        aria-invalid={!!errors.password?.message}
+                        aria-errormessage="password-error"
                         placeholder="Password"
                         {...register("password")}
                     />
-                    {errors.password && <p className="error-messages">{errors.password?.message}</p>}
+                    {errors.password && (
+                        <p
+                            id="password-error"
+                            className="error-messages"
+                        >
+                            {errors.password?.message}
+                        </p>
+                    )}
                 </fieldset>
                 <button className="btn btn-lg btn-primary pull-xs-right">Sign in</button>
             </form>

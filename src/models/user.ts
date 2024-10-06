@@ -3,7 +3,7 @@ import { z } from "zod";
 export const userAuthSchema = z.object({
     username: z.string(),
     email: z.string().min(1, "必須項目です").email("メールアドレスを入力してください"),
-    password: z.string(),
+    password: z.string().min(1, "必須項目です"),
 });
 
 export const userSchema = z.object({
