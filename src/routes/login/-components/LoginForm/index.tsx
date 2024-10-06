@@ -11,7 +11,11 @@ type Props = {
 };
 
 export const LoginForm = (props: Props) => {
-    const { register, handleSubmit } = useForm<FormData>({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FormData>({
         resolver: zodResolver(formDataSchema),
     });
     return (
@@ -20,18 +24,31 @@ export const LoginForm = (props: Props) => {
                 <fieldset className="form-group">
                     <input
                         className="form-control form-control-lg"
-                        type="email"
+                        type="text"
+                        aria-label="email"
                         placeholder="Email"
+                        aria-invalid={!!errors.email?.message}
+                        aria-errormessage={"email-error"}
                         {...register("email")}
                     />
+                    {errors.email && (
+                        <p
+                            id={"email-error"}
+                            className="error-messages"
+                        >
+                            {errors.email?.message}
+                        </p>
+                    )}
                 </fieldset>
                 <fieldset className="form-group">
                     <input
                         className="form-control form-control-lg"
-                        type="password"
+                        type="text"
+                        aria-label="password"
                         placeholder="Password"
                         {...register("password")}
                     />
+                    {errors.password && <p className="error-messages">{errors.password?.message}</p>}
                 </fieldset>
                 <button className="btn btn-lg btn-primary pull-xs-right">Sign in</button>
             </form>
