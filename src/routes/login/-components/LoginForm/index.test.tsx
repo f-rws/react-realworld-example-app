@@ -5,30 +5,36 @@ import { LoginForm } from "./index.tsx";
 
 const user = userEvent.setup();
 
+function setup() {
+    const onClickSignIn = vi.fn();
+    render(<LoginForm onSubmit={onClickSignIn} />);
+
+    const emailInput = screen.getByRole("textbox", { name: "email" });
+    const button = screen.getByRole("button");
+
+    return {
+        onClickSignIn,
+        emailInput,
+        button,
+    };
+}
+
 describe("LoginForm", () => {
     test("メールアドレス以外を入力し、「Sign in」を試みると、バリデーションエラーが表示される", async () => {
-        const onClickSignIn = vi.fn();
-        render(<LoginForm onSubmit={onClickSignIn} />);
+        const { onClickSignIn, emailInput, button } = setup();
 
-        const input = screen.getByRole("textbox", { name: "email" });
-        const button = screen.getByRole("button");
-
-        await user.type(input, "メールアドレスではありません");
+        await user.type(emailInput, "メールアドレスではありません");
         await user.click(button);
 
         expect(onClickSignIn).not.toHaveBeenCalled();
-        expect(input).toHaveAccessibleErrorMessage("メールアドレスを入力してください");
+        expect(emailInput).toHaveAccessibleErrorMessage("メールアドレスを入力してください");
     });
     test("メールアドレスが未入力の場合に「Sign in」を試みると、バリデーションエラーが表示される", async () => {
-        const onClickSignIn = vi.fn();
-        render(<LoginForm onSubmit={onClickSignIn} />);
-
-        const input = screen.getByRole("textbox", { name: "email" });
-        const button = screen.getByRole("button");
+        const { onClickSignIn, emailInput, button } = setup();
 
         await user.click(button);
 
         expect(onClickSignIn).not.toHaveBeenCalled();
-        expect(input).toHaveAccessibleErrorMessage("必須項目です");
+        expect(emailInput).toHaveAccessibleErrorMessage("必須項目です");
     });
 });
