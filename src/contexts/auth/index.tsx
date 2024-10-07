@@ -14,8 +14,10 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const { setItem } = useLocalStorage();
-    const [isLoggedIn, setIsLoggedIn] = useState<AuthContextType["isLoggedIn"]>(false);
+    const { setItem, getItem } = useLocalStorage();
+    const [isLoggedIn, setIsLoggedIn] = useState<AuthContextType["isLoggedIn"]>(
+        !!getItem(LOCAL_STORAGE_KEYS.JWT_TOKEN),
+    );
 
     const login: AuthContextType["login"] = (token) => {
         setIsLoggedIn(true);

@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { isAxiosError } from "axios";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { apiClientUsers } from "@/api/users";
 import { useAuth } from "@/contexts/auth/useAuth.ts";
 import { useAuthedUser } from "@/contexts/authed-user/useAuthedUser.ts";
 import { userAuthSchema } from "@/models/user.ts";
+import { LoginForm } from "./-components/LoginForm";
 
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute("/login/")({
     component: Login,
 });
 
@@ -20,9 +19,6 @@ function Login() {
     const { login } = useAuth();
     const { setAuthedUser } = useAuthedUser();
 
-    const { register, handleSubmit } = useForm<FormData>({
-        resolver: zodResolver(formDataSchema),
-    });
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
     const onSubmit = async (requestData: FormData) => {
@@ -62,25 +58,7 @@ function Login() {
                             </ul>
                         ) : null}
 
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <fieldset className="form-group">
-                                <input
-                                    className="form-control form-control-lg"
-                                    type="email"
-                                    placeholder="Email"
-                                    {...register("email")}
-                                />
-                            </fieldset>
-                            <fieldset className="form-group">
-                                <input
-                                    className="form-control form-control-lg"
-                                    type="password"
-                                    placeholder="Password"
-                                    {...register("password")}
-                                />
-                            </fieldset>
-                            <button className="btn btn-lg btn-primary pull-xs-right">Sign in</button>
-                        </form>
+                        <LoginForm onSubmit={onSubmit} />
                     </div>
                 </div>
             </div>
