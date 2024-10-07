@@ -13,11 +13,20 @@ function setup() {
     const passwordInput = screen.getByRole("textbox", { name: "password" });
     const button = screen.getByRole("button");
 
+    async function handleValidEmailInput() {
+        await user.type(emailInput, "test@gmail.com");
+    }
+    async function handleValidPasswordInput() {
+        await user.type(passwordInput, "password");
+    }
+
     return {
         onClickSignIn,
         emailInput,
         passwordInput,
         button,
+        handleValidEmailInput,
+        handleValidPasswordInput,
     };
 }
 
@@ -46,5 +55,14 @@ describe("LoginForm", () => {
 
         expect(onClickSignIn).not.toHaveBeenCalled();
         expect(passwordInput).toHaveAccessibleErrorMessage("必須項目です");
+    });
+    test("適正内容で「Sign in」を試みると、onSubmit イベントハンドラー実行される", async () => {
+        const { onClickSignIn, button, handleValidEmailInput, handleValidPasswordInput } = setup();
+
+        await handleValidEmailInput();
+        await handleValidPasswordInput();
+        await user.click(button);
+
+        expect(onClickSignIn).toHaveBeenCalled();
     });
 });
