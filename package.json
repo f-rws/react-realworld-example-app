@@ -12,10 +12,12 @@
     "format": "prettier --write \"**/*.+(js|ts|tsx)\"",
     "tsc": "tsc --noEmit --project tsconfig.app.json",
     "test": "vitest --ui",
-    "testrun": "vitest run"
+    "testrun": "vitest run",
+    "storybook": "npx ladle serve"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
+    "@ladle/react": "^4.1.2",
     "@tanstack/react-router": "^1.45.14",
     "axios": "^1.7.4",
     "react": "^18.3.1",
